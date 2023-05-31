@@ -19,6 +19,12 @@
 
                     @Html.TextBoxFor(model => model.IdCine, new { @class = "visually-hidden form-control" })
                 </div>
+                <div class="col" style="display:none">
+                    <input type="text" id="txtLat" class="form-control" placeholder="latitude">
+                </div>
+                <div class="col" style="display:none">
+                    <input type="text" id="txtLng" class="form-control" placeholder="longitud">
+                </div>
                 <div class="col">
                     @Html.LabelFor(model => model.Nombre)
 
@@ -30,7 +36,7 @@
                 <div class="col">
                     @Html.LabelFor(model => model.Direccion)
 
-                    @Html.TextBoxFor(model => model.Direccion, new { @class = "form-control", @id = "txtNombre" })
+                    @Html.TextBoxFor(model => model.Direccion, new { @class = "form-control", @id = "txtDireccion" })
 
                     @Html.ValidationMessageFor(model => model.Direccion)
                 </div>
@@ -55,12 +61,6 @@
             <br />
             <div class="row">
                 <div class="col-md-8" id="Mapa" style="width: 100%;height: 400px;background-color: grey;">
-
-                    <script async defer
-                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw&callback=initMap">
-
-                    </script>
-
                 </div>
 
             </div>
@@ -84,21 +84,59 @@
 
 
 
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw"></script>
 
 <script>
 
-    function initMap() {
 
-        var macc = { lat: 19.43628765130414, lng:  -99.15462692076241 };
+    var Http = new XMLHttpRequest();
+    var vMarker
+    var map
+    map = new google.maps.Map(document.getElementById('Mapa'), {
+        zoom: 14,
+        center: new google.maps.LatLng(19.4326296, -99.1331785),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    vMarker = new google.maps.Marker({
+        position: new google.maps.LatLng(19.4326296, -99.1331785),
+        draggable: true
+    });
+    google.maps.event.addListener(vMarker, 'dragend', function(evt) {
+        $("#txtLat").val(evt.latLng.lat().toFixed(6));
+        $("#txtLng").val(evt.latLng.lng().toFixed(6));
+        map.panTo(evt.latLng);
+        var latitud = evt.latLng.lat().toFixed(6);
+        var longitud = evt.latLng.lng().toFixed(6);
+        var Direction = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitud + ',' + longitud
+            + '&key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw';
+
+
+            $.ajax({
+            type: 'GET',
+            url: Direction,
+            dataType: 'json',
+            success: function (result) {
+
+                var array = result.results;
+                 $("#txtDireccion").val(array[0].formatted_address );
+
+            },
+            error: function (ex) {
+                alert('Failed' + ex);
+
+            }
+
+        });
         
-        var map = new google.maps.Map(
+    });
+    map.setCenter(vMarker.position);
+    vMarker.setMap(map);
 
-            document.getElementById('Mapa'), { zoom: 15, center: macc });
 
-        var marker = new google.maps.Marker({ position: macc, map: map });
-
-    }
 
 </script>
 
