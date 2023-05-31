@@ -1,0 +1,105 @@
+﻿@model ML.Cine
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Formulario</h2>
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        @using (Html.BeginForm("Form", "Cine", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            <div class="row">
+                <div class="col" style="display:none">
+                    @Html.LabelFor(model => model.IdCine, new { @class = "visually-hidden" })
+
+                    @Html.TextBoxFor(model => model.IdCine, new { @class = "visually-hidden form-control" })
+                </div>
+                <div class="col">
+                    @Html.LabelFor(model => model.Nombre)
+
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+
+                    @Html.ValidationMessageFor(model => model.Nombre)
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.Direccion)
+
+                    @Html.TextBoxFor(model => model.Direccion, new { @class = "form-control", @id = "txtNombre" })
+
+                    @Html.ValidationMessageFor(model => model.Direccion)
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.Zona)
+                    @Html.DropDownListFor(model => model.Zona.IdZona, new SelectList(Model.Zona.Zonas, "IdZona", "Nombre"), "Selecciona una opción", new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(model => model.Zona.IdZona)
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.Ventas)
+
+                    @Html.TextBoxFor(model => model.Ventas, new { @class = "form-control", @id = "txtNombre" })
+
+                    @Html.ValidationMessageFor(model => model.Ventas)
+                </div>
+
+            </div>
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-md-8" id="Mapa" style="width: 100%;height: 400px;background-color: grey;">
+
+                    <script async defer
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw&callback=initMap">
+
+                    </script>
+
+                </div>
+
+            </div>
+            <br />
+            <br />
+            <div class="row">
+                <div class="col">
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+
+                    @Html.ActionLink("Regresar", "GetAll", "Cine", htmlAttributes: new { @class = "btn btn-danger" })
+                </div>
+
+            </div>
+
+
+        }
+
+    </div>
+
+</div>
+
+
+
+
+
+<script>
+
+    function initMap() {
+
+        var macc = { lat: 19.43628765130414, lng:  -99.15462692076241 };
+        
+        var map = new google.maps.Map(
+
+            document.getElementById('Mapa'), { zoom: 15, center: macc });
+
+        var marker = new google.maps.Marker({ position: macc, map: map });
+
+    }
+
+</script>
+
+

@@ -1,0 +1,58 @@
+﻿@model ML.Cine
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class=row>
+        <div class="text-center">
+            <h2>Empresas</h2>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Seleccione una Empresa para editarla o + para agregar...</h5>
+            <hr />
+        </div>
+    </div>
+    <div style="float:right;">
+        @Html.ActionLink("+", "Form", "Empresa", htmlAttributes: new { @class = "btn btn-success" })
+    </div>
+    <br />
+    <table class="table table-dark table-hover table-bordered table-responsive">
+        <thead>
+            <tr class="table-secondary">
+                <td>Editar</td>
+                <td style="display :none;">id</td>
+                <td>Nombre</td>
+                <td>Direccion</td>
+                <td>Zona</td>
+                <td>Ventas</td>
+                
+                <td>Eliminar</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ML.Cine cine in Model.Cines)
+            {
+                <tr>
+                    <td style="text-align: center; vertical-align: middle;"><a class="btn btn-warning glyphicon" href="@Url.Action("Form", "Cine", new { IdCine = cine.IdCine })"><i class="bi bi-pencil-square" style="color: ivory"></i>Editar</a></td>
+                    <td style="display :none;">@cine.IdCine</td>
+                    <td>@cine.Nombre </td>
+                    <td>@cine.Direccion </td>
+                    <td>@cine.Zona.Nombre </td>
+                    <td>@cine.Ventas </td>
+                    
+
+                    <td style="text-align: center; vertical-align: middle;"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Empresa", new { IdCine = cine.IdCine})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i>Eliminar</a></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
