@@ -29,6 +29,8 @@ namespace BL
                             cine.Nombre = obj.Nombre;
                             cine.Direccion = obj.Direcccion;
                             cine.Ventas = obj.Ventas.Value;
+                          
+                           
                             cine.Zona = new ML.Zona();
                             cine.Zona.IdZona = obj.IdZona.Value;
                             cine.Zona.Nombre = obj.Zona;
@@ -53,6 +55,43 @@ namespace BL
             return result;
 
         }
+
+        //public static ML.Result GetVentasTotales()
+        //{
+        //    ML.Result result = new ML.Result();
+        //    try
+        //    {
+        //        using (DL.CineContext context = new DL.CineContext())
+        //        {
+        //            var RowsAfected = context.Cines.FromSqlRaw("GetVentas").AsEnumerable().FirstOrDefault();
+
+        //            result.Object = new object();
+
+        //            if (RowsAfected != null)
+        //            {
+        //                ML.Cine cine = new ML.Cine();
+
+        //                cine.VentasTotaless = new ML.VentasEstadisticas();
+        //                cine.VentasTotaless.VentasTotales = RowsAfected.VentasTotales;
+                        
+
+        //                result.Correct = true;
+        //            }
+        //            else
+        //            {
+        //                result.Correct = false;
+        //                result.ErrorMessage = "Ocurrió un error al obtener el registros en la tabla Cine";
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result.Correct = false;
+        //        result.ErrorMessage = ex.Message;
+        //    }
+        //    return result;
+        //}
 
         public static ML.Result Add(ML.Cine cine)
         {

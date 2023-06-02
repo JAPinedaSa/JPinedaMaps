@@ -1,0 +1,68 @@
+﻿@model ML.Peliculas
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container ">
+
+
+    <div class=row>
+        <div class="text-center">
+            <h2>CARTELERA</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>PELICULAS POLUARES MAYO 2023 </h5>
+            <hr />
+        </div>
+    </div>
+    @*BOTON QUE LLEVA AL FORMULARIO*@
+    <div style="float:right;">
+        @Html.ActionLink("Agregar nuevo lIbro", "Form", "Libro", htmlAttributes: new { @class = "btn btn-success" })
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        @foreach (ML.Peliculas pelicula in Model.PeliculasList)
+        {
+
+            <div style=" width: 20rem;">
+                <div class="card text-center">
+                    @if (pelicula.path == null || pelicula.path == " ")
+                    {
+
+                        <img src="/image/Usuario.jpg" class="card-img-top" style="height:350px;">
+                    }
+                    else
+                    {
+                        <img src="@pelicula.path@pelicula.poster_path" class="card-img-top" style="height:350px;">
+                    }
+
+                    <div class="card-body" style="height:250px;">
+                        <h5 class="card-title">@pelicula.original_title </h5>
+                        <p class="card-text">
+                            Clasificacion  +18: @pelicula.adult <br />
+                            Lenguaje Original: @pelicula.original_language <br />
+                            Titulo: @pelicula.title
+                        </p>
+
+                        @using (Html.BeginForm("Form", "Pelicula", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                           
+                            <input type="text" id="name" name="id" value="@pelicula.id" style="display :none;">
+                               <input type="submit" value="Añadir a favoritos" class="btn btn-success" />
+                        }
+
+                    </div>
+                </div>
+                <br />
+
+                <br />
+            </div>
+        }
+    </div>
+
+</div>

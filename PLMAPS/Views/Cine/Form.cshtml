@@ -101,11 +101,11 @@
         center: new google.maps.LatLng(19.4326296, -99.1331785),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    vMarker = new google.maps.Marker({
-        position: new google.maps.LatLng(19.4326296, -99.1331785),
-        draggable: true
-    });
-    google.maps.event.addListener(vMarker, 'dragend', function(evt) {
+
+    ;
+    
+    google.maps.event.addListener(map, 'click', function(evt) {
+        
         $("#txtLat").val(evt.latLng.lat().toFixed(6));
         $("#txtLng").val(evt.latLng.lng().toFixed(6));
         map.panTo(evt.latLng);
@@ -113,28 +113,36 @@
         var longitud = evt.latLng.lng().toFixed(6);
         var Direction = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitud + ',' + longitud
             + '&key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw';
+         
 
-
-            $.ajax({
+        $.ajax({
             type: 'GET',
             url: Direction,
             dataType: 'json',
-            success: function (result) {
+            success: function(result) {
 
                 var array = result.results;
-                 $("#txtDireccion").val(array[0].formatted_address );
+                $("#txtDireccion").val(array[0].formatted_address);
 
             },
-            error: function (ex) {
+            error: function(ex) {
                 alert('Failed' + ex);
 
             }
 
         });
-        
-    });
+        vMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(latitud, longitud)
+
+
+        });
+
+
     map.setCenter(vMarker.position);
-    vMarker.setMap(map);
+    vMarker.setMap(map);          
+
+    });
+   
 
 
 

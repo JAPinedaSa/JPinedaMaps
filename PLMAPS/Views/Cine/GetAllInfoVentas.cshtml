@@ -1,0 +1,76 @@
+﻿@model ML.Cine
+
+@{
+    ViewData["Title"] = "GetAllInfoVentas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+        <!-- DIV PARA LA GRAFICA -->
+        <div class="col-md-6">
+            <div id="chartContainer" style="height: 400px; width: 500px; margin-top:100px;"></div>
+        </div>
+
+        <!-- DIV PARA EL MAPA -->
+        <div class="col-md-6" id="Mapa" style="width: 600px;height: 400px;background-color: grey; margin-top:100px;">
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw"></script>
+
+    <script type="text/javascript">
+        window.onload = function() {
+
+            var options = {
+                title: {
+                    text: "Porcentaje de ventas por Zonas"
+                },
+                
+                animationEnabled: true,
+                data: [{
+                    type: "pie",
+                    startAngle: 40,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [
+                        { y: @Model.VentasTotaless.VentasNorte, label: "Norte" },
+                        { y: @Model.VentasTotaless.VentasSur, label: "Sur" },
+                        { y: @Model.VentasTotaless.VentasEste, label: "Este" },
+                        { y: @Model.VentasTotaless.VentasOeste, label: "Oeste" },
+                        
+                    ]
+                }]
+            };
+            $("#chartContainer").CanvasJSChart(options);
+
+        }
+    </script>
+
+    <script>
+
+
+        var vMarker
+        var map
+        map = new google.maps.Map(document.getElementById('Mapa'), {
+            zoom: 14,
+            center: new google.maps.LatLng(19.4326296, -99.1331785),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+    </script>
+
+}
+
+
+
+

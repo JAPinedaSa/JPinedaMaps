@@ -94,5 +94,95 @@ namespace PLMAPS.Controllers
             return View("Modal");
         }
 
+        //public ActionResult GetAllInfoVentas()
+        //{
+        //    //ML.Cine cineVentas = new ML.Cine();
+        //    //cineVentas.Cines = new List<object>();
+        //    //ML.Result resultCines = BL.Cine.GetAll();
+        //    //ML.Result resultVentaTotal = BL.Cine.GetVentasTotales();
+        //    //decimal VentaNorte = 0;
+
+        //    //if (resultVentaTotal.Correct)
+        //    //{
+        //    //    cineVentas.VentasTotaless.VentasList = resultVentaTotal.Objects;
+        //    //    cineVentas.Cines = resultCines.Objects;
+        //    //    foreach (var item in cineVentas.Cines)
+        //    //    {
+        //    //        if (cineVentas.Zona.IdZona == 1)
+        //    //        {
+        //    //            VentaNorte =+ cineVentas.Ventas;
+        //    //        }
+        //    //    }
+        //    //}
+        //    return View();
+        //}
+        [HttpGet]
+        public ActionResult GetAllInfoVentas()
+        {
+            ML.Cine cineVentas = new ML.Cine();
+            ML.Cine cineVentasZones = new ML.Cine();
+            cineVentasZones.VentasTotaless = new ML.VentasEstadisticas();
+            cineVentas.Cines = new List<object>();
+            decimal ventaTotal = 0;
+            decimal ventaNorte =0;
+            decimal ventaSur = 0;
+            decimal ventaEste = 0;
+            decimal ventaOeste = 0;
+            ML.Result resultCines = BL.Cine.GetAll();
+            if (resultCines.Correct)
+            {
+                cineVentas.Cines = resultCines.Objects;
+                foreach (ML.Cine cine in cineVentas.Cines)
+                {
+
+                    ventaTotal = (ventaTotal + cine.Ventas);
+                }
+
+                foreach (ML.Cine cineVentaZona in cineVentas.Cines)
+                {
+                    if (cineVentaZona.Zona.IdZona == 1)
+                    {
+                        ventaNorte= (ventaNorte + cineVentaZona.Ventas);
+                        //cineVentasZones.VentasTotaless.VentasNorte = ventaNorte;
+                    }
+                    else
+                    {
+                        if (cineVentaZona.Zona.IdZona == 2)
+                        {
+                            ventaSur = (ventaSur + cineVentaZona.Ventas);
+                            
+                        }
+                        else
+                        {
+                            if (cineVentaZona.Zona.IdZona == 3)
+                            {
+                                ventaEste = (ventaEste + cineVentaZona.Ventas);
+                                
+                            }
+                            else
+                            {
+                                ventaOeste = (ventaOeste + cineVentaZona.Ventas);
+                               
+                            }
+                        }
+                    }
+
+
+                }
+                cineVentasZones.VentasTotaless.VentasNorte = ((ventaNorte/ventaTotal)*100);
+                cineVentasZones.VentasTotaless.VentasSur = ((ventaSur / ventaTotal) * 100);
+                cineVentasZones.VentasTotaless.VentasEste = ((ventaEste / ventaTotal) * 100);
+                cineVentasZones.VentasTotaless.VentasOeste = ((ventaOeste / ventaTotal) * 100);
+
+                
+
+            }
+
+
+
+
+            return View(cineVentasZones);
+        }
+
     }
 }

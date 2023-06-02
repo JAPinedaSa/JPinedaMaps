@@ -7,19 +7,19 @@
 <div class="container">
     <div class=row>
         <div class="text-center">
-            <h2>Empresas</h2>
+            <h2>CINES</h2>
 
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
-            <h5>Seleccione una Empresa para editarla o + para agregar...</h5>
+            <h5>Seleccione un Cine para editarlo o + para agregar...</h5>
             <hr />
         </div>
     </div>
     <div style="float:right;">
-        @Html.ActionLink("+", "Form", "Empresa", htmlAttributes: new { @class = "btn btn-success" })
+        @Html.ActionLink("+", "Form", "Cine", htmlAttributes: new { @class = "btn btn-success" })
     </div>
     <br />
     <table class="table table-dark table-hover table-bordered table-responsive">
@@ -47,7 +47,7 @@
                     <td>@cine.Ventas </td>
                     
 
-                    <td style="text-align: center; vertical-align: middle;"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Empresa", new { IdCine = cine.IdCine})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i>Eliminar</a></td>
+                    <td style="text-align: center; vertical-align: middle;"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Cine", new { IdCine = cine.IdCine})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i>Eliminar</a></td>
                 </tr>
             }
 

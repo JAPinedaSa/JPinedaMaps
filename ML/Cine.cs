@@ -12,7 +12,9 @@ namespace ML
         public string Nombre { get; set; }
         public string Direccion { get; set; }
         public decimal Ventas { get; set; }
+       
         public List<object> Cines { get; set; }
         public Zona Zona { get; set; }
+        public VentasEstadisticas VentasTotaless { get; set; }
     }
 }
