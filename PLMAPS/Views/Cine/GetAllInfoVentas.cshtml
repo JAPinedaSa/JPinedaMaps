@@ -5,6 +5,95 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<head> 
+    <style> 
+ 
+#map {
+  height: 100%;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+input[type=text] {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  line-height: 40px;
+  margin-right: 0;
+  min-width: 25%;
+}
+
+input[type=button] {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  height: 40px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+input[type=button]:hover {
+  background: rgb(235, 235, 235);
+}
+input[type=button].button-primary {
+  background-color: #1a73e8;
+  color: white;
+}
+input[type=button].button-primary:hover {
+  background-color: #1765cc;
+}
+input[type=button].button-secondary {
+  background-color: white;
+  color: #1a73e8;
+}
+input[type=button].button-secondary:hover {
+  background-color: #d2e3fc;
+}
+
+#response-container {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  overflow: auto;
+  max-height: 50%;
+  max-width: 90%;
+  background-color: rgba(255, 255, 255, 0.95);
+  font-size: small;
+}
+
+#instructions {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  padding: 1rem;
+  font-size: medium;
+}
+    </style>
+</head>
 <div class="container">
 
     <div class="row">
@@ -13,17 +102,118 @@
             <div id="chartContainer" style="height: 400px; width: 500px; margin-top:100px;"></div>
         </div>
 
-        <!-- DIV PARA EL MAPA -->
-        <div class="col-md-6" id="Mapa" style="width: 600px;height: 400px;background-color: grey; margin-top:100px;">
+        <!-- DIV PARA EL MAPA  -->
+        <div class="col-md-6" id="map" style="width: 600px;height: 400px;background-color: grey; margin-top:100px;">
+
+            @foreach (ML.Cine cine in Model.Cines)
+            {
+                <input type="text" id="txtDireccion_@cine.IdCine" name="id" value="@cine.Direccion" @*style="display :none;"*@ onfocus="crearMarcador('txtDireccion_@cine.IdCine')">
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw&callback=initMap&v=weekly" defer></script>
+            }
+
+
+
         </div>
 
     </div>
 </div>
 
+
 @section Scripts {
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw"></script>
+    
+    <script>
+
+        let map;
+        let marker;
+        let geocoder;
+        let responseDiv;
+        let response;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 8,
+                center: { lat: -34.397, lng: 150.644 },
+                mapTypeControl: false,
+            });
+            geocoder = new google.maps.Geocoder();
+
+            const inputText = document.createElement("input");
+
+            inputText.type = "text";
+            inputText.placeholder = "Enter a location";
+
+            const submitButton = document.createElement("input");
+
+            submitButton.type = "button";
+            submitButton.value = "Geocode";
+            submitButton.classList.add("button", "button-primary");
+
+            const clearButton = document.createElement("input");
+
+            clearButton.type = "button";
+            clearButton.value = "Clear";
+            clearButton.classList.add("button", "button-secondary");
+            response = document.createElement("pre");
+            response.id = "response";
+            response.innerText = "";
+            responseDiv = document.createElement("div");
+            responseDiv.id = "response-container";
+            responseDiv.appendChild(response);
+
+            const instructionsElement = document.createElement("p");
+
+            instructionsElement.id = "instructions";
+            instructionsElement.innerHTML =
+                "<strong>Instructions</strong>: Enter an address in the textbox to geocode or click on the map to reverse geocode.";
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputText);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(submitButton);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(clearButton);
+            map.controls[google.maps.ControlPosition.LEFT_TOP].push(instructionsElement);
+            map.controls[google.maps.ControlPosition.LEFT_TOP].push(responseDiv);
+            marker = new google.maps.Marker({
+                map,
+            });
+            map.addListener("click", (e) => {
+                geocode({ location: e.latLng });
+            });
+            submitButton.addEventListener("click", () =>
+                geocode({ address: inputText.value })
+            );
+            clearButton.addEventListener("click", () => {
+                clear();
+            });
+            clear();
+        }
+
+        function clear() {
+            marker.setMap(null);
+            responseDiv.style.display = "none";
+        }
+
+        function geocode(request) {
+            clear();
+            geocoder
+                .geocode(request)
+                .then((result) => {
+                    const { results } = result;
+
+                    map.setCenter(results[0].geometry.location);
+                    marker.setPosition(results[0].geometry.location);
+                    marker.setMap(map);
+                    responseDiv.style.display = "block";
+                    response.innerText = JSON.stringify(result, null, 2);
+                    return results;
+                })
+                .catch((e) => {
+                    alert("Geocode was not successful for the following reason: " + e);
+                });
+        }
+
+        window.initMap = initMap;
+    </script>
+
 
     <script type="text/javascript">
         window.onload = function() {
@@ -32,7 +222,7 @@
                 title: {
                     text: "Porcentaje de ventas por Zonas"
                 },
-                
+
                 animationEnabled: true,
                 data: [{
                     type: "pie",
@@ -47,7 +237,7 @@
                         { y: @Model.VentasTotaless.VentasSur, label: "Sur" },
                         { y: @Model.VentasTotaless.VentasEste, label: "Este" },
                         { y: @Model.VentasTotaless.VentasOeste, label: "Oeste" },
-                        
+
                     ]
                 }]
             };
@@ -56,20 +246,13 @@
         }
     </script>
 
-    <script>
 
 
-        var vMarker
-        var map
-        map = new google.maps.Map(document.getElementById('Mapa'), {
-            zoom: 14,
-            center: new google.maps.LatLng(19.4326296, -99.1331785),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
 
-    </script>
 
-}
+} @*fin del script seccion*@
+
+
 
 
 

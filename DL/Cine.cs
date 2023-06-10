@@ -15,9 +15,6 @@ public partial class Cine
 
     public decimal? Ventas { get; set; }
 
-    public string Zona { get; set; }
-   
-    
-
     public virtual Zona? IdZonaNavigation { get; set; }
+    public string Zona { get; set; }
 }

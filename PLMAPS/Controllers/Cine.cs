@@ -179,10 +179,12 @@ namespace PLMAPS.Controllers
             }
 
 
-
+            cineVentasZones.Cines = resultCines.Objects;
 
             return View(cineVentasZones);
         }
+
+
 
     }
 }

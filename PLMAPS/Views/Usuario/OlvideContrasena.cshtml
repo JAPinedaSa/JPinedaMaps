@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    
+    <link rel="stylesheet" href="/css/OlvideContraseña.css"/>
+    <title>OlvideContrasena</title>
+</head>
+<body>
+
+
+    <div class="container">
+        <div class="col-lg-6 login-form">
+            <img class="image-logo" src="https://c8.alamy.com/compes/2aymj5t/plantillas-de-vectores-de-logotipo-de-letras-iniciales-ai-o-ia-2aymj5t.jpg" />
+            <br>
+            <br>
+            <br>
+            <h5> Recuperar Contraseña </h5>
+            <p> Ingresa el correo electrónico, <br> mandaremos tu contraseña por correo electrónico </p>
+            @using (Html.BeginForm("OlvideContrasena", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="input-form">
+                    <br>
+                    <input class="effect-1" type="text" placeholder="Usuario" name="Email">
+                    <span class="focus-border"></span>
+                </div>
+
+                <br>
+                
+                <input type="submit" value="Recuperar Contraseña" class="btn btn-primary"  />
+            }
+
+
+        </div>
+    </div>
+</body>
+</html>

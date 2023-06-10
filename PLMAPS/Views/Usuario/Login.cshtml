@@ -1,0 +1,98 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="/css/Login.css" />
+    <script src="/js/Login.js"></script>
+    <title>Login</title>
+</head>
+<body>
+
+
+    <div class="cotn_principal">
+        <div class="cont_centrar">
+
+            <div class="cont_login">
+                <div class="cont_info_log_sign_up">
+                    <div class="col_md_login">
+                        <div class="cont_ba_opcitiy">
+
+                            <h2>LOGIN</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <button class="btn_login" onclick="change_to_login()">LOGIN</button>
+                        </div>
+                    </div>
+                    <div class="col_md_sign_up">
+                        <div class="cont_ba_opcitiy">
+                            <h2>SIGN UP</h2>
+
+
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+
+                            <button class="btn_sign_up" onclick="change_to_sign_up()">SIGN UP</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="cont_back_info">
+                    <div class="cont_img_back_grey">
+                        <img src="https://i.pinimg.com/564x/8b/a0/20/8ba020c87d208645aa22a1fdce0cf3f0.jpg" alt="" />
+                    </div>
+
+                </div>
+                <div class="cont_forms">
+                    <div class="cont_img_back_">
+                        <img src="https://i.pinimg.com/564x/8b/a0/20/8ba020c87d208645aa22a1fdce0cf3f0.jpg" alt="" />
+                    </div>
+                     <!--Formulario para Iniciar Sesión-->
+                    @using (Html.BeginForm("Login", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="cont_form_login">
+                            <a href="#" onclick="hidden_login_and_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                            <h2>LOGIN</h2>
+
+                            <input type="text" placeholder="Email" name="UserName" />
+                            <input type="password" placeholder="Password" name="Contraseña" />
+                            <input type="submit" value="Iniciar Sesión" class="btn_login" onclick="change_to_login()" />
+                            <br>
+                            <br>
+                            
+                            <a style="color:black; text-align:center;" href="/Usuario/OlvideContrasena">Olvide mi contraseña</a>
+
+                        </div>
+                    }
+                    <!--Formulario para Registrarse-->
+                    @using (Html.BeginForm("Login", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="cont_form_sign_up">
+                            <a href="#" onclick="hidden_login_and_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                            <h2>SIGN UP</h2>
+                            <input type="text" placeholder="Nombre" name="Nombre"/>
+                            <input type="text" placeholder="Apellido Paterno" name="ApellidoPaterno"/>
+                            <input type="text" placeholder="Apellido Materno" name="ApellidoMaterno"/>
+                            <input type="text" placeholder="UserName" name="UserName" />
+                            <input type="text" placeholder="Correo" name="Email"/>
+                            <input type="password" placeholder="Password" name="Contraseña"/>
+                            <input type="submit" value="Resgitrarse" class="btn_sign_up" style="color:white; text-align:center;" onclick="change_to_sign_up()" />
+                            
+                             
+                        </div>
+
+                    }
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+
