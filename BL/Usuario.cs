@@ -29,6 +29,11 @@ namespace BL
 
                         usuario.UserName = query.UserName;
                         usuario.Contraseña = query.Contraseña;
+                        usuario.Nombre = query.Nombre;
+                        usuario.ApellidoPaterno = query.ApellidoPaterno;
+                        usuario.ApellidoMaterno = query.ApellidoMaterno;
+                        usuario.IdUsuario = query.IdUsuario;
+                        usuario.Email = query.Email;
 
                         result.Object = usuario;
 
@@ -67,7 +72,7 @@ namespace BL
                     {
                         ML.Usuario usuario = new ML.Usuario();
 
-                        usuario.UserName = query.Email;
+                        usuario.UserName = query.UserName;
                         
 
                         result.Object = usuario;
@@ -115,6 +120,36 @@ namespace BL
                 result.Correct = false;
                 result.ErrorMessage = ex.Message;
                 result.Ex = ex;
+            }
+
+            return result;
+        }
+
+        public static  ML.Result Update(ML.Usuario usuario)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.CineContext context = new DL.CineContext())
+                {
+                    int RowsAfected = context.Database.ExecuteSqlRaw($"UsuarioUpdate '{usuario.Nombre}', '{usuario.ApellidoPaterno}', '{usuario.ApellidoMaterno}', '{usuario.UserName}', '{usuario.Email}', @Password", new SqlParameter("@Password", usuario.Contraseña));
+
+                    if (RowsAfected > 0)
+                    {
+                        result.Correct = true; ;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                        result.ErrorMessage = "Ocurrio un error al Actualizar La contraseña";
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
             }
 
             return result;

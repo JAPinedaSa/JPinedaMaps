@@ -1,0 +1,26 @@
+﻿@model ML.Usuario
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="/css/NewPassword.css" />
+    <title>NuevaContraseña</title>
+</head>
+<body>
+    <div class="log-form">
+        <h2 style="text-align:center;">Recuperar Contraseña</h2>
+        <form action="http://localhost:5181/Usuario/NuevaContraseña" method="post"> 
+            <input style="display:none;" type="text" name="userName" placeholder="Password" value="@Model.UserName" />
+            <input type="password" name="password" placeholder="Password" />
+            <input type="password" title="username" placeholder="Confirm Password" />
+            <button type="submit" class="btn">Actualizar Contraseña</button>
+            
+        </form>
+    </div>
+</body>
+</html>
